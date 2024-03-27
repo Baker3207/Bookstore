@@ -6,13 +6,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddDbContext<WaterProjectContext>(options =>
+builder.Services.AddDbContext<BookContext>(options =>
 {
-    options.UseSqlite(builder.Configuration["ConnectionStrings:WaterConnection"]);
+    options.UseSqlite(builder.Configuration["ConnectionStrings:BookConnection"]);
 }
 );
 
-builder.Services.AddScoped<IWaterRepository, EFWaterRepository>();
+builder.Services.AddScoped<IBookRepository, EFBookRepository>();
 
 var app = builder.Build();
 
@@ -31,8 +31,8 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapControllerRoute("pagination","Projects/{pageNum}", new {Controller ="Home", action="Index"});
+
+app.MapDefaultControllerRoute();
 
 app.Run();
