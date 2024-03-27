@@ -24,6 +24,12 @@ namespace TheWaterProject.Infrastructure
         public string? PageAction { get; set; } 
         public PaginationInfo PageModel { get; set; }
 
+        public bool PageClassesEnabled { get; set; } = false;
+        public string PageClass { get; set; } = string.Empty;
+        public string PageClassNormal { get; set; } = string.Empty;
+        public string PageClassSelected { get; set; } = string.Empty;
+
+
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             if (ViewContext != null && PageModel != null)
@@ -38,6 +44,12 @@ namespace TheWaterProject.Infrastructure
                     string? url = urlHelper.Action(PageAction, new { pageNum = i });
                     tag.InnerHtml.Append(i.ToString());
                     tag.Attributes["href"] = url;
+                    
+                    if(PageClassesEnabled)
+                    {
+                        tag.AddCssClass(PageClass);
+                        tag.AddCssClass(i == PageModel.CurrentPage ? PageClassSelected : PageClassNormal);
+                    }
                     
                     result.InnerHtml.AppendHtml(tag);
                 }

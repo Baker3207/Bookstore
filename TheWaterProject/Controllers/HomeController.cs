@@ -7,20 +7,20 @@ namespace TheWaterProject.Controllers
 {
     public class HomeController : Controller
     {
-        private IWaterRepository _repo;
-        public HomeController(IWaterRepository temp)
+        private IBookRepository _repo;
+        public HomeController(IBookRepository temp)
         {
             _repo = temp;
         }
 
         public IActionResult Index(int pageNum)
         {   
-            var pageSize = 5;
+            var pageSize = 10;
 
-            var blah = new ProjectsListViewModel
+            var blah = new BookListViewModel
             {
-                Projects = _repo.Projects
-                .OrderBy(x => x.ProjectName)
+                Books = _repo.Books
+                .OrderBy(x => x.Title)
                 .Skip((pageNum - 1) * pageSize)
                 .Take(pageSize),
 
@@ -28,7 +28,7 @@ namespace TheWaterProject.Controllers
                 {
                     CurrentPage = pageNum,
                     ItemsPerPage = pageSize,
-                    TotalItems = _repo.Projects.Count()
+                    TotalItems = _repo.Books.Count()
                 }
             };
             return View(blah);
